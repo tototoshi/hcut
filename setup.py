@@ -22,5 +22,6 @@ setup(
         "Topic :: Utilities ",
         "Topic :: Software Development",
         ],
-    long_description='Cutter for text files with header'
+    long_description='Cutter for text files with header',
+    install_requires = ["argparse"]
     )
