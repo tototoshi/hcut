@@ -5,7 +5,9 @@ import sys
 import fileinput
 import argparse
 
+__author__  = "Toshiyuki Takahashi"
 __version__ = "0.1.0"
+__license__ = "BSD License"
 
 DEFAULT_SEPARATOR = "\t"
 
@@ -36,18 +38,15 @@ def _extract_fields_from_line(field_indices, line, separator):
 
     return cutted
 
-def _get_hcut_iterator(target_fields, file_obj, print_header, separator):
-    return _HcutIterator(target_fields, file_obj, print_header, separator)
-
 def cut_stdin(target_fields, print_header=False, separator=DEFAULT_SEPARATOR):
-    for line in _get_hcut_iterator(target_fields, sys.stdin, print_header, separator):
+    for line in reader(target_fields, sys.stdin, print_header, separator):
         print separator.join(line)
 
 def cut_files(target_fields, input_files, print_header=False, separator=DEFAULT_SEPARATOR):
     for input_file in input_files:
         f = open(input_file)
         try:
-            for line in _get_hcut_iterator(target_fields, f, print_header, separator):
+            for line in reader(target_fields, f, print_header, separator):
                 print separator.join(line)
                 # print header only once
                 print_header = False
@@ -55,7 +54,7 @@ def cut_files(target_fields, input_files, print_header=False, separator=DEFAULT_
             f.close()
 
 
-class _HcutIterator(object):
+class reader(object):
 
     def __init__(self, target_fields, file_obj, print_header, separator):
         header = file_obj.next()
