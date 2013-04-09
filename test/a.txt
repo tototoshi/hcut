@@ -1,0 +1,4 @@
+USER_ID	NAME	AGE
+1	Sato	10
+2	Suzuki	30
+3	Abe	20

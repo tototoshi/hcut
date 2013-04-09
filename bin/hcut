@@ -1,0 +1,35 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import errno
+import sys
+import fileinput
+import argparse
+import hcut
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='hcut')
+    parser.add_argument('file', nargs='*')
+    parser.add_argument('-f', '--field', action='append')
+    parser.add_argument('-d', '--delimiter')
+    parser.add_argument('--header', action='store_true')
+    parser.add_argument('--version', action='version', version='%(prog)s ' + hcut.__version__)
+
+    args = parser.parse_args()
+    print_header = args.header
+    input_files = args.file
+    fields = args.field
+    delimiter = args.delimiter
+
+    if delimiter is None:
+        delimiter = hcut.DEFAULT_SEPARATOR
+
+    try:
+        if len(input_files) == 0:
+            hcut.cut_stdin(fields, print_header, delimiter)
+        else:
+            hcut.cut_files(fields, input_files, print_header, delimiter)
+    except KeyboardInterrupt, e:
+        pass
+    except IOError, e:
+        if e.errno == errno.EPIPE:
+            pass
