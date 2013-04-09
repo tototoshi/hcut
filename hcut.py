@@ -6,10 +6,13 @@ import fileinput
 import argparse
 
 __author__  = "Toshiyuki Takahashi"
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __license__ = "BSD License"
 
 DEFAULT_SEPARATOR = "\t"
+
+class FieldNotFoundError(Exception):
+    pass
 
 def _get_field_index(field, header_fields):
     i = 0
@@ -17,7 +20,7 @@ def _get_field_index(field, header_fields):
         if field == hf:
             return i
         i += 1
-    raise "Field not found"
+    raise FieldNotFoundError("%s not found" % (field,))
 
 def _get_all_fields_indices(fields, header_fields):
     res = []
@@ -38,15 +41,15 @@ def _extract_fields_from_line(field_indices, line, separator):
 
     return cutted
 
-def cut_stdin(target_fields, print_header=False, separator=DEFAULT_SEPARATOR):
-    for line in reader(target_fields, sys.stdin, print_header, separator):
+def cut_stdin(target_fields, print_header=False, separator=DEFAULT_SEPARATOR, encoding="utf-8"):
+    for line in reader(target_fields, sys.stdin, print_header, separator, encoding):
         print separator.join(line)
 
-def cut_files(target_fields, input_files, print_header=False, separator=DEFAULT_SEPARATOR):
+def cut_files(target_fields, input_files, print_header=False, separator=DEFAULT_SEPARATOR, encoding="utf-8"):
     for input_file in input_files:
         f = open(input_file)
         try:
-            for line in reader(target_fields, f, print_header, separator):
+            for line in reader(target_fields, f, print_header, separator, encoding):
                 print separator.join(line)
                 # print header only once
                 print_header = False
@@ -56,9 +59,10 @@ def cut_files(target_fields, input_files, print_header=False, separator=DEFAULT_
 
 class reader(object):
 
-    def __init__(self, target_fields, file_obj, print_header, separator):
+    def __init__(self, target_fields, file_obj, print_header, separator, encoding):
         header = file_obj.next()
         header_fields = header.rstrip().split(separator)
+        header_fields = [unicode(h, encoding) for h in header_fields]
         self._pos = 0
         self._separator = separator
         self._print_header = print_header

@@ -6,18 +6,30 @@ import fileinput
 import argparse
 import hcut
 
+def guess_encoding(s):
+    encodings = ['ascii', 'euc-jp', 'utf-8', 'cp932', 'shift-jis']
+    for enc in encodings:
+        try:
+            unicode(s, enc)
+            break
+        except UnicodeDecodeError, e:
+            enc = ''
+    return enc
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='hcut')
     parser.add_argument('file', nargs='*')
     parser.add_argument('-f', '--field', action='append')
     parser.add_argument('-d', '--delimiter')
+    parser.add_argument('-e', '--encoding', default='utf-8')
     parser.add_argument('--header', action='store_true')
     parser.add_argument('--version', action='version', version='%(prog)s ' + hcut.__version__)
 
     args = parser.parse_args()
     print_header = args.header
     input_files = args.file
-    fields = args.field
+    encoding = args.encoding
+    fields = [unicode(f, guess_encoding(f)) for f in args.field]
     delimiter = args.delimiter
 
     if delimiter is None:
@@ -25,9 +37,9 @@ if __name__ == '__main__':
 
     try:
         if len(input_files) == 0:
-            hcut.cut_stdin(fields, print_header, delimiter)
+            hcut.cut_stdin(fields, print_header, delimiter, encoding)
         else:
-            hcut.cut_files(fields, input_files, print_header, delimiter)
+            hcut.cut_files(fields, input_files, print_header, delimiter, encoding)
     except KeyboardInterrupt, e:
         pass
     except IOError, e:
