@@ -19,8 +19,8 @@ def guess_encoding(s):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='hcut')
     parser.add_argument('file', nargs='*')
-    parser.add_argument('-f', '--field', action='append')
-    parser.add_argument('-d', '--delimiter')
+    parser.add_argument('-f', '--field', action='append', required=True)
+    parser.add_argument('-d', '--delimiter', default=hcut.DEFAULT_SEPARATOR)
     parser.add_argument('-e', '--encoding', default='utf-8')
     parser.add_argument('--header', action='store_true')
     parser.add_argument('--version', action='version', version='%(prog)s ' + hcut.__version__)
@@ -29,11 +29,8 @@ if __name__ == '__main__':
     print_header = args.header
     input_files = args.file
     encoding = args.encoding
-    fields = [unicode(f, guess_encoding(f)) for f in args.field]
     delimiter = args.delimiter
-
-    if delimiter is None:
-        delimiter = hcut.DEFAULT_SEPARATOR
+    fields = [unicode(f, guess_encoding(f)) for f in args.field]
 
     try:
         if len(input_files) == 0:
