@@ -1,5 +1,7 @@
 from hcut import  __version__
 from setuptools import setup
+import sys
+sys.path.append("./test")
 
 setup(
     name='hcut',
@@ -23,5 +25,6 @@ setup(
         "Topic :: Software Development",
         ],
     long_description='Cutter for text files with header',
-    install_requires = ["argparse"]
+    install_requires = ["argparse"],
+    test_suite = 'test_hcut.suite'
     )
