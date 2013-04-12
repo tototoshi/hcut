@@ -42,14 +42,14 @@ def _extract_fields_from_line(field_indices, line, separator):
     return cutted
 
 def cut_stdin(target_fields, print_header=False, separator=DEFAULT_SEPARATOR, encoding="utf-8"):
-    for line in reader(target_fields, sys.stdin, print_header, separator, encoding):
+    for line in reader(sys.stdin, target_fields, print_header, separator, encoding):
         print separator.join(line)
 
 def cut_files(target_fields, input_files, print_header=False, separator=DEFAULT_SEPARATOR, encoding="utf-8"):
     for input_file in input_files:
         f = open(input_file)
         try:
-            for line in reader(target_fields, f, print_header, separator, encoding):
+            for line in reader(f, target_fields, print_header, separator, encoding):
                 print separator.join(line)
                 # print header only once
                 print_header = False
@@ -59,7 +59,7 @@ def cut_files(target_fields, input_files, print_header=False, separator=DEFAULT_
 
 class reader(object):
 
-    def __init__(self, target_fields, file_obj, print_header, separator, encoding):
+    def __init__(self, file_obj, target_fields, print_header=False, separator=DEFAULT_SEPARATOR, encoding="utf-8"):
         header = file_obj.next()
         header_fields = header.rstrip().split(separator)
         header_fields = [unicode(h, encoding) for h in header_fields]

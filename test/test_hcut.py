@@ -24,7 +24,7 @@ class HcutTest(unittest.TestCase):
     def testReader(self):
         f = open(self.name)
         try:
-            reader = hcut.reader(["USER_ID", "NAME"], f, False, "\t", "utf-8")
+            reader = hcut.reader(f, ["USER_ID", "NAME"], False, "\t", "utf-8")
             records = list(reader)
             self.assertEqual([['1', 'Takahashi'], ['2', 'Satoh'], ['3', 'Abe']], records)
         finally:
