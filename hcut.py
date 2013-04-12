@@ -6,7 +6,7 @@ import fileinput
 import argparse
 
 __author__  = "Toshiyuki Takahashi"
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 __license__ = "BSD License"
 
 DEFAULT_SEPARATOR = "\t"
