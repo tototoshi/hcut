@@ -4,7 +4,7 @@ Cutter for text files with header.
 
 
 ## Install
-Current version is 0.1.3. 
+Current version is 0.1.4. 
 
 It is available from PyPI.
 ```
