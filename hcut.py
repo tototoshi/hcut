@@ -3,7 +3,6 @@
 import errno
 import sys
 import fileinput
-import argparse
 
 __author__  = "Toshiyuki Takahashi"
 __version__ = "0.1.3"
