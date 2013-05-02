@@ -1,1 +1,7 @@
+include/
+dist/
+bin/
+build/
+lib/
+*\.egg
 \.pyc
