@@ -6,7 +6,7 @@ sys.path.append("./test")
 setup(
     name='hcut',
     py_modules=['hcut'],
-    scripts=["bin/hcut"],
+    scripts=["scripts/hcut"],
     version=__version__,
     license='BSD',
     platforms=['POSIX', 'Windows'],
