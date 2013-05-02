@@ -5,7 +5,7 @@ import sys
 import fileinput
 
 __author__  = "Toshiyuki Takahashi"
-__version__ = "0.1.3"
+__version__ = "0.1.4"
 __license__ = "BSD License"
 
 DEFAULT_SEPARATOR = "\t"
